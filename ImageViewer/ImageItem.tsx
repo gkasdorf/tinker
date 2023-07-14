@@ -1,22 +1,20 @@
-import {Dimensions as RNDimensions, Modal, PixelRatio, Pressable, StyleSheet, Text, View} from "react-native";
+import {Dimensions as RNDimensions, Modal, Pressable, StyleSheet, View} from "react-native";
 import {useRef, useState} from "react";
 import FastImage, {OnLoadEvent} from "react-native-fast-image";
 import {useImageDimensions} from "./useImageDimensions";
 import Animated, {runOnJS, runOnUI, useAnimatedStyle, useSharedValue, withTiming} from "react-native-reanimated";
 import {
 	Gesture,
-	GestureDetector, GestureStateChangeEvent,
-	GestureUpdateEvent, PanGestureHandlerEventPayload,
-	PinchGestureHandlerEventPayload, TapGestureHandlerEventPayload
+	GestureDetector,
+	GestureStateChangeEvent,
+	GestureUpdateEvent,
+	PanGestureHandlerEventPayload,
+	PinchGestureHandlerEventPayload,
+	TapGestureHandlerEventPayload
 } from "react-native-gesture-handler";
 
 interface IProps {
 	source: {uri:string},
-}
-
-interface Dimensions {
-	height: number,
-	width: number,
 }
 
 interface MeasureResult {
@@ -64,44 +62,44 @@ export default function ImageItem({source}: IProps) {
 
 	// This opens or closes our modal
 	const onRequestOpenOrClose = () => {
-			if(!expanded) { // If expanded is false, we are opening up. So we want to fade in the background color
-				// First we set the position information
-				nonViewerRef.current.measure((x, y, width, height, px, py) => {
-					initialPosition.value = {
-						x,
-						y,
-						width,
-						height,
-						px,
-						py
-					};
+		if(!expanded) { // If expanded is false, we are opening up. So we want to fade in the background color
+			// First we set the position information
+			nonViewerRef.current.measure((x, y, width, height, px, py) => {
+				initialPosition.value = {
+					x,
+					y,
+					width,
+					height,
+					px,
+					py
+				};
 
-					// Set the position to the initial
-					positionX.value = px;
-					positionY.value = py;
+				// Set the position to the initial
+				positionX.value = px;
+				positionY.value = py;
 
-					// Move image to the middle
-					runOnUI(setToCenter)();
-				});
+				// Move image to the middle
+				runOnUI(setToCenter)();
+			});
 
 
-				// Then we handle the fade
-				backgroundColor.value = withTiming("rgba(0, 0, 0, 1)", {duration: 200});
+			// Then we handle the fade
+			backgroundColor.value = withTiming("rgba(0, 0, 0, 1)", {duration: 200});
 
-				setExpanded(true);
-			} else { // Here we need to not only change the background color, but we also don't want the modal to disappear
-							// until AFTER the animation is complete
-				// First we move the image back to its original position
-				positionX.value = withTiming(initialPosition.value.px);
-				positionY.value = withTiming(initialPosition.value.py);
+			setExpanded(true);
+		} else { // Here we need to not only change the background color, but we also don't want the modal to disappear
+						// until AFTER the animation is complete
+			// First we move the image back to its original position
+			positionX.value = withTiming(initialPosition.value.px);
+			positionY.value = withTiming(initialPosition.value.py);
 
-				backgroundColor.value = withTiming("rgba(0, 0, 0, 0)", {duration: 200});
+			backgroundColor.value = withTiming("rgba(0, 0, 0, 0)", {duration: 200});
 
-				// Animation is finished after 200 ms, so we will set to hidden after that.
-				setTimeout(() => {
-					setExpanded(false);
-				}, 200)
-			}
+			// Animation is finished after 200 ms, so we will set to hidden after that.
+			setTimeout(() => {
+				setExpanded(false);
+			}, 200)
+		}
 	};
 
 	const setToCenter = () => {
@@ -118,7 +116,7 @@ export default function ImageItem({source}: IProps) {
 		zoomScale.value = event?.scale;
 	}
 
-	const onPinchEnd = (event: GestureStateChangeEvent<PinchGestureHandlerEventPayload>) => {
+	const onPinchEnd = () => {
 		"worklet";
 
 		// If the user has zoomed out past the scale of one, we will reset the scale
@@ -128,7 +126,7 @@ export default function ImageItem({source}: IProps) {
 	}
 
 	// Double tap result
-	const onDoubleTap = (event: GestureUpdateEvent<TapGestureHandlerEventPayload>) => {
+	const onDoubleTap = () => {
 		"worklet";
 
 		// Move back to center if we are returning to scale of one
