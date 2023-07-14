@@ -31,7 +31,7 @@ export function useImageDimensions(): UseImageDimensions {
 const getRatio = (
 	realHeight: number,
 	realWidth: number,
-	modifier: number = 0.6
+	modifier: number = 0.6,
 ): Dimensions => {
 	const screenHeight = RNDimensions.get("screen").height * modifier;
 	const screenWidth = RNDimensions.get("screen").width;
