@@ -18,7 +18,7 @@ const images = [
 
 export default function AppTwo() {
   const renderItem = ({ item }) => {
-    return <ImageItem source={item} />;
+    return <ImageItem source={item} heightOverride={200} widthOverride={200} />;
   };
 
   return (

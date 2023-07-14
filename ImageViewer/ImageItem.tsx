@@ -252,7 +252,7 @@ export default function ImageItem({
   });
 
   return (
-    <>
+    <View>
       <Pressable
         onPress={onRequestOpenOrClose}
         ref={nonViewerRef}
@@ -292,7 +292,7 @@ export default function ImageItem({
           </Animated.View>
         </GestureDetector>
       </Modal>
-    </>
+    </View>
   );
 }
 
