@@ -1,9 +1,14 @@
+import "react-native-gesture-handler";
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import ReactMarkdown from "react-markdown";
 import {FlashList} from "@shopify/flash-list";
+import AppTwo from "./AppTwo";
+import {GestureHandlerRootView} from "react-native-gesture-handler";
 
-export default function App() {
+export default AppTwo;
+
+function AppOne() {
   const text = `
   # Header
   ## Header two
@@ -16,11 +21,13 @@ export default function App() {
   `
 
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <Text><ReactMarkdown children={text} components={{p: Text, h1: Hone, h2: Htwo, strong: Htwo, em: Htwo}} /></Text>
-      <StatusBar style="auto" />
-    </View>
+    <GestureHandlerRootView>
+      <View style={styles.container}>
+        <Text>Open up App.js to start working on your app!</Text>
+        <Text><ReactMarkdown children={text} components={{p: Text, h1: Hone, h2: Htwo, strong: Htwo, em: Htwo}} /></Text>
+        <StatusBar style="auto" />
+      </View>
+    </GestureHandlerRootView>
   );
 }
 
