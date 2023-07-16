@@ -24,6 +24,7 @@ import {
   PanGestureHandlerEventPayload,
   PinchGestureHandlerEventPayload,
 } from "react-native-gesture-handler";
+import ExitButton from "./ExitButton";
 
 interface IProps {
   source: { uri: string };
@@ -269,28 +270,31 @@ export default function ImageItem({
         />
       </Pressable>
       <Modal visible={expanded} transparent>
-        <GestureDetector gesture={tapGesture}>
-          <Animated.View style={[styles.imageModal, backgroundStyle]}>
-            <GestureDetector gesture={panGesture}>
-              <GestureDetector gesture={pinchGesture}>
-                <Animated.View style={[scaleStyle]}>
-                  <Animated.View style={[positionStyle]}>
-                    <FastImage
-                      source={source}
-                      style={[
-                        {
-                          height: dimensions.dimensions.height,
-                          width: dimensions.dimensions.width,
-                        },
-                      ]}
-                      onLoad={onLoad}
-                    />
+        <ExitButton onPress={onRequestOpenOrClose}></ExitButton>
+        <View style={{ flex: 1, zIndex: -1 }}>
+          <GestureDetector gesture={tapGesture}>
+            <Animated.View style={[styles.imageModal, backgroundStyle]}>
+              <GestureDetector gesture={panGesture}>
+                <GestureDetector gesture={pinchGesture}>
+                  <Animated.View style={[scaleStyle]}>
+                    <Animated.View style={[positionStyle]}>
+                      <FastImage
+                        source={source}
+                        style={[
+                          {
+                            height: dimensions.dimensions.height,
+                            width: dimensions.dimensions.width,
+                          },
+                        ]}
+                        onLoad={onLoad}
+                      />
+                    </Animated.View>
                   </Animated.View>
-                </Animated.View>
+                </GestureDetector>
               </GestureDetector>
-            </GestureDetector>
-          </Animated.View>
-        </GestureDetector>
+            </Animated.View>
+          </GestureDetector>
+        </View>
       </Modal>
     </View>
   );
