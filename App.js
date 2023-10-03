@@ -4,9 +4,10 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import ReactMarkdown from "react-markdown";
 import AppTwo from "./AppTwo";
+import AppThree from "./AppThree";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-export default AppTwo;
+export default AppThree;
 
 function AppOne() {
   const text = `
