@@ -6,8 +6,9 @@ import ReactMarkdown from "react-markdown";
 import AppTwo from "./AppTwo";
 import AppThree from "./AppThree";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import AppFour from "./AppFour";
 
-export default AppThree;
+export default AppFour;
 
 function AppOne() {
   const text = `
