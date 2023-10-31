@@ -10,6 +10,7 @@ import { FlashList, ListRenderItemInfo } from "@shopify/flash-list";
 import { CalendarDay } from "./CalendarDay";
 import { CalendarMonth } from "./CalendarMonth";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { createCalendar } from "../helpers";
 
 interface ICalendarBarContext {
   startDate?: Date | undefined;
@@ -59,15 +60,13 @@ interface IProps {
 const keyExtractor = (item: Date, index: number) => index.toString();
 
 export function CalendarBar({ startDate, endDate, totalDays }: IProps) {
-  const days: Date[] = useMemo(
-    () => [
-      new Date(1696404486000),
-      new Date(1696404486000 + 86400000),
-      new Date(1696404486000 + 86400000 * 2),
-      new Date(1696404486000 + 86400000 * 3),
-    ],
-    []
-  );
+  const days = useMemo(() => {
+    return createCalendar({
+      startDate,
+      endDate,
+      totalDays,
+    });
+  }, [startDate, endDate, totalDays]);
 
   const [selectedDate, setSelectedDate] = useState<Date>(days[0]);
 

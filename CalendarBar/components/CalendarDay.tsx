@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useMemo } from "react";
-import { Alert, StyleSheet, Text, View } from "react-native";
+import React, { useCallback, useEffect } from "react";
+import { StyleSheet, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { useCalendarBar } from "./CalendarBar";
 import Animated, {
@@ -16,24 +16,22 @@ interface IProps {
 export function CalendarDay({ date }: IProps) {
   const calendarBar = useCalendarBar();
 
-  const boxBackgroundColor = useSharedValue(
-    calendarBar.selectedDate === date
-      ? calendarBar.dayColor
-      : calendarBar.selectedDayColor
-  );
+  const boxBackgroundColor = useSharedValue(calendarBar.dayColor);
+  const textColor = useSharedValue(calendarBar.textColor);
 
   useEffect(() => {
     if (
       calendarBar.selectedDate !== date &&
-      boxBackgroundColor.value === calendarBar.selectedDayColor
+      boxBackgroundColor.value !== calendarBar.dayColor
     ) {
-      boxBackgroundColor.value = withTiming(calendarBar.dayColor, {
-        duration: 100,
-      });
+      boxBackgroundColor.value = calendarBar.dayColor;
+      textColor.value = calendarBar.textColor;
     }
   }, [calendarBar.selectedDate]);
 
   const onPress = useCallback(() => {
+    console.log(date);
+
     if (calendarBar.selectedDate === date) {
       return;
     }
@@ -63,6 +61,9 @@ export function CalendarDay({ date }: IProps) {
     boxBackgroundColor.value = withTiming(calendarBar.selectedDayColor, {
       duration: 50,
     });
+    textColor.value = withTiming(calendarBar.selectedTextColor, {
+      duration: 50,
+    });
 
     runOnJS(onPress)();
   };
@@ -70,27 +71,24 @@ export function CalendarDay({ date }: IProps) {
   const pressGesture = Gesture.Tap()
     .onBegin(onTapBegin)
     .onTouchesCancelled(onTapCancelled)
+    .maxDuration(60 * 1000)
     .onEnd(onTapEnd);
-
-  const textStyle = useMemo(
-    () => ({
-      color:
-        calendarBar.selectedDate === date
-          ? calendarBar.textColor
-          : calendarBar.selectedTextColor,
-    }),
-    [calendarBar.selectedDate]
-  );
 
   const boxStyle = useAnimatedStyle(() => ({
     backgroundColor: boxBackgroundColor.value,
+  }));
+
+  const textStyle = useAnimatedStyle(() => ({
+    color: textColor.value,
   }));
 
   return (
     <GestureDetector gesture={pressGesture}>
       <View style={styles.container}>
         <Animated.View style={[styles.box, boxStyle]}>
-          <Text style={textStyle}>{date.getDay()}</Text>
+          <Animated.Text style={textStyle}>
+            {date.toLocaleString("en-US", { day: "numeric" })}
+          </Animated.Text>
         </Animated.View>
       </View>
     </GestureDetector>
